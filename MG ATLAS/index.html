@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0D0D0F">
+  <meta name="description" content="راهنمای چندزبانه‌ی سفر و شناخت ایران، روسیه، امارات و چین">
+  <title>MG ATLAS | راهنمای چهار کشور</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/Pass.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+  <script defer src="https://unpkg.com/lucide@1.73.0/dist/umd/lucide.min.js"></script>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <canvas id="solar-canvas" aria-hidden="true"></canvas>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="MG ATLAS home">
+      <span class="brand-mark" aria-hidden="true">MG</span>
+      <span class="brand-copy"><strong>MG ATLAS</strong><small data-i18n="brandSubtitle">راهنمای چهار سرزمین</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#countries" data-i18n="navCountries">کشورها</a>
+      <a href="#city-directory" data-i18n="navCities">شهرها</a>
+      <a href="#map-section" data-i18n="navMap">نقشه</a>
+      <a href="#about" data-i18n="navAbout">درباره MG ATLAS</a>
+    </nav>
+    <div class="header-tools">
+      <label class="sr-only" for="language-select" data-i18n="languageLabel">زبان سایت</label>
+      <select id="language-select" class="language-select" aria-label="زبان سایت">
+        <option value="fa">فارسی</option>
+        <option value="ar">العربية</option>
+        <option value="ru">Русский</option>
+        <option value="zh">中文</option>
+      </select>
+      <a class="header-cta" href="#countries"><span data-i18n="explore">شروع کشف</span><i data-lucide="arrow-up-left" aria-hidden="true"></i></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="eyebrow">چهار کشور، روایت‌های بی‌شمار</span></div>
+        <h1 data-i18n="heroTitle">جهان را<br><em>از نزدیک</em> کشف کن.</h1>
+        <p class="hero-intro" data-i18n="heroIntro">راهنمایی برای دیدن شهرها، شنیدن تاریخ و پیدا کردن مکان‌هایی که هر سفر را به یک داستان تبدیل می‌کنند.</p>
+        <div class="hero-actions">
+          <a class="button button-raised button-light" href="#countries"><span data-i18n="browseCountries">کشورها را ببین</span><i data-lucide="arrow-up-left" aria-hidden="true"></i></a>
+          <span class="hero-note" data-i18n="noAccount">بدون حساب کاربری؛ فقط کشف و مطالعه</span>
+        </div>
+      </div>
+      <div class="hero-art solar-system-panel" aria-hidden="true">
+        <div class="solar-system-hud glass-panel">
+          <span class="solar-system-kicker">MG ATLAS / DEEP SPACE</span>
+          <div class="solar-system-count"><strong>04</strong><span>DESTINATIONS IN ORBIT</span></div>
+          <div class="solar-system-codes"><span>IRN</span><span>RUS</span><span>ARE</span><span>CHN</span></div>
+        </div>
+        <div class="solar-system-axis"></div>
+        <div class="solar-system-caption"><span class="solar-system-live"></span> SOLAR SYSTEM · 01—08</div>
+      </div>
+    </section>
+
+    <section class="intro-strip" aria-label="Site highlights">
+      <p data-i18n="introStatement">راهنمایی آرام و دقیق برای سفر، فرهنگ و جغرافیا.</p>
+      <div class="strip-metrics">
+        <div><strong>04</strong><span data-i18n="countriesLabel">کشور</span></div>
+        <div><strong id="city-count">17</strong><span data-i18n="citiesLabel">شهر منتخب</span></div>
+        <div><strong>04</strong><span data-i18n="languagesLabel">زبان</span></div>
+      </div>
+    </section>
+
+    <section class="section countries-section" id="countries">
+      <div class="section-heading">
+        <div><span class="section-kicker" data-i18n="section01">01 / مقصدها</span><h2 data-i18n="countriesTitle">چهار کشور، چهار جهان متفاوت</h2></div>
+        <p data-i18n="countriesIntro">از شهرهای کهن تا پایتخت‌های پرجنب‌وجوش؛ هر مقصد را با زمینه‌ی تاریخی و پیشنهادهای بازدید بشناس.</p>
+      </div>
+      <div id="country-grid" class="country-grid"></div>
+    </section>
+
+    <section class="section city-directory" id="city-directory">
+      <div class="section-heading">
+        <div><span class="section-kicker" data-i18n="sectionCityIndex">02 / شهرها</span><h2 data-i18n="cityIndexTitle">شهر بعدی‌ات را پیدا کن</h2></div>
+        <p data-i18n="cityIndexIntro">راهنماهای شهرها را مرور کن یا جست‌وجو کن؛ هر صفحه با دیدنی‌های شاخص، توضیحات چندزبانه و موقعیت روی نقشه همراه است.</p>
+      </div>
+      <div class="city-directory-tools">
+        <label class="sr-only" for="city-search" data-i18n="citySearchLabel">جست‌وجوی شهر یا کشور</label>
+        <input id="city-search" type="search" autocomplete="off" placeholder="نام شهر یا کشور را جست‌وجو کن">
+        <span class="directory-count"><strong id="directory-count">17</strong><span data-i18n="citiesLabel">شهر منتخب</span></span>
+      </div>
+      <div id="city-grid" class="city-index-grid"></div>
+    </section>
+
+    <section class="map-section" id="map-section">
+      <div class="map-copy">
+        <span class="section-kicker section-kicker-light" data-i18n="section02">03 / جغرافیا</span>
+        <h2 data-i18n="mapTitle">شهرهای منتخب<br>روی یک نقشه</h2>
+        <p data-i18n="mapIntro">روی نقشه جابه‌جا شو، پایتخت‌ها را انتخاب کن و از نزدیک با دیدنی‌های شاخص هر شهر آشنا شو.</p>
+        <label class="sr-only" for="city-select" data-i18n="chooseCity">انتخاب شهر</label>
+        <select id="city-select" class="city-select">
+          <option value="" data-i18n="allCapitals">نمایش همه‌ی شهرها</option>
+        </select>
+        <div class="map-legend"><span class="legend-dot"></span><span data-i18n="mapAttributionHint">نقشه‌ی تعاملی با داده‌های OpenStreetMap</span></div>
+      </div>
+      <div class="map-frame">
+        <div id="map" role="application" aria-label="Interactive map of the four capital cities"></div>
+        <div class="map-label"><span class="map-live-dot"></span><span data-i18n="mapLive">نقشه‌ی زنده</span></div>
+      </div>
+    </section>
+
+    <section class="section city-section" id="city-guide">
+      <div class="section-heading city-heading">
+        <div><span class="section-kicker" data-i18n="section03">04 / راهنمای شهر</span><h2 id="city-title">تهران</h2></div>
+        <p id="city-summary"></p>
+      </div>
+      <section id="city-weather" class="weather-panel glass-panel" aria-live="polite" aria-busy="true">
+        <div class="weather-heading">
+          <div><span class="section-kicker" data-i18n="weatherKicker">آب‌وهوای شهر</span><p id="weather-city-label"></p></div>
+          <span id="weather-updated" class="weather-updated" data-i18n="weatherLoading">در حال دریافت دادهٔ هواشناسی...</span>
+        </div>
+        <div id="weather-content" class="weather-content"></div>
+      </section>
+      <div class="city-content">
+        <div class="city-aside">
+          <div class="city-meta"><span class="meta-icon" aria-hidden="true">⌖</span><div><small data-i18n="capitalOf">پایتخت کشور</small><strong id="city-country"></strong></div></div>
+          <div class="city-note"><span class="note-mark">✳</span><p data-i18n="sourceNote">اطلاعات مکان‌ها بر پایه‌ی منابع رسمی و میراث جهانی گردآوری شده‌اند. ساعت و هزینه‌ی بازدید ممکن است تغییر کند؛ پیش از رفتن منبع اصلی را بررسی کنید.</p></div>
+          <a id="city-source-link" class="place-source city-source" href="#" target="_blank" rel="noopener noreferrer"></a>
+          <a id="open-map-link" class="text-link" href="#map-section"><span data-i18n="viewOnMap">دیدن شهر روی نقشه</span><span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="places-area">
+          <div class="place-toolbar">
+            <p><span id="place-count">0</span> <span data-i18n="curatedPlaces">مکان منتخب</span></p>
+            <label class="sr-only" for="category-select" data-i18n="filterCategory">فیلتر بر اساس دسته‌بندی</label>
+            <select id="category-select" class="category-select"></select>
+          </div>
+          <div id="place-grid" class="place-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="editorial-note" id="about">
+      <span class="editorial-symbol" aria-hidden="true">✳</span>
+      <div><span class="section-kicker" data-i18n="aboutKicker">درباره‌ی MG ATLAS</span><h2 data-i18n="aboutTitle">دانستنی‌های خوب، سفر را عمیق‌تر می‌کنند.</h2><p data-i18n="aboutText">MG ATLAS یک راهنمای مطالعه‌محور است؛ بدون ورود، حساب کاربری یا شلوغی اضافه. اطلاعات مکان‌ها همراه با منبع ارائه می‌شوند تا بتوانی جزئیات تازه را از مرجع اصلی بررسی کنی.</p></div>
+      <a href="#countries" class="button button-raised button-navy"><span data-i18n="returnToCountries">بازگشت به کشورها</span><i data-lucide="arrow-up" aria-hidden="true"></i></a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#"><span class="brand-mark" aria-hidden="true">MG</span><span class="brand-copy"><strong>MG ATLAS</strong><small data-i18n="footerLine">برای کنجکاوان جهان</small></span></a>
+    <p data-i18n="footerDisclaimer">اطلاعات سفر ممکن است تغییر کند؛ پیش از بازدید، جزئیات را از منابع رسمی بررسی کنید.</p>
+    <p class="license-note" data-i18n="licenseNote">شرح برخی آثار میراث جهانی با بازنویسی از منابع یونسکو تهیه شده است؛ مجوز CC BY-SA IGO 3.0.</p>
+    <span>© <span id="year"></span> MG ATLAS</span>
+  </footer>
+</body>
+</html>
